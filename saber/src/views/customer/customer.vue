@@ -52,7 +52,7 @@
         query: {},
         loading: true,
         page: {
-          pageSize: 10,
+          pageSize: 20,
           currentPage: 1,
           total: 0
         },
