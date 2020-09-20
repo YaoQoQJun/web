@@ -35,7 +35,7 @@
                    v-if="permission.customer_delete"
                    @click="handleDelete">删 除
         </el-button>
-        <el-button type="primary" size="small" icon="el-icon-download" v-if="permission.customer_export" @click="customerExport()">导出</el-button>
+        <el-button type="primary" size="small" icon="el-icon-download" v-if="permission.customer_export" @click="customerExport()">导 出</el-button>
       </template>
     </avue-crud>
   </basic-container>
