@@ -37,6 +37,34 @@
         <if test="customer.sex != null and customer.sex != ''">
             and a.sex=#{customer.sex}
         </if>
+        <if test="customer.status != null and customer.status != ''">
+            and a.status=#{customer.status}
+        </if>
+    </select>
+
+    <insert id="saveCustomerImg" parameterType="org.springblade.customer.entity.CustomerImg">
+        INSERT INTO
+        cqct_customer_img ( `customer_id`, `img_domain`, `img_link`, `img_name`, `img_originalName` )
+        VALUES
+	    (
+	        #{customerId},
+	        #{imgDomain},
+	        #{imgLink},
+	        #{imgName},
+	        #{imgOriginalName}
+	    )
+    </insert>
+
+    <select id="getCustomerImgs" parameterType="java.lang.Long" resultType="org.springblade.customer.entity.CustomerImg">
+        select * from cqct_customer_img where customer_id=#{customerId}
+    </select>
+
+    <delete id="removeCustomerImg" parameterType="java.lang.System">
+        delete from cqct_customer_img where img_name=#{imgName}
+    </delete>
+
+    <select id="getCreateUserAccount" parameterType="java.lang.Long" resultType="java.lang.String">
+        select account from blade_user where id=#{createUser}
     </select>
 
 </mapper>

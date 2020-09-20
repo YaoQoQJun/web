@@ -92,11 +92,11 @@ flowable:
 #oss默认配置
 oss:
   enabled: true
-  name: qiniu
+  name: minio
   tenant-mode: true
-  endpoint: http://prt1thnw3.bkt.clouddn.com
-  access-key: N_Loh1ngBqcJovwiAJqR91Ifj2vgOWHOf8AwBA_h
-  secret-key: AuzuA1KHAbkIndCU0dB3Zfii2O3crHNODDmpxHRS
+  endpoint: http://localhost:9000
+  access-key: minioadmin
+  secret-key: minioadmin
   bucket-name: bladex
 
 

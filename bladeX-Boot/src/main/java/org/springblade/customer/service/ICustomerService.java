@@ -16,10 +16,14 @@
  */
 package org.springblade.customer.service;
 
+import org.springblade.core.oss.model.BladeFile;
 import org.springblade.customer.entity.Customer;
+import org.springblade.customer.entity.CustomerImg;
 import org.springblade.customer.vo.CustomerVO;
 import org.springblade.core.mp.base.BaseService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.List;
 
 /**
  * 用户表 服务类
@@ -38,4 +42,32 @@ public interface ICustomerService extends BaseService<Customer> {
 	 */
 	IPage<CustomerVO> selectCustomerPage(IPage<CustomerVO> page, CustomerVO customer);
 
+
+	/**
+	 * 保存用户图片
+	 * @param customerImg
+	 * @return
+	 */
+	boolean saveCustomerImg(CustomerImg customerImg);
+
+	/**
+	 * 根据客户ID查询客户所有图片
+	 * @param customerId
+	 * @return
+	 */
+	List<CustomerImg> getCustomerImgs(Long customerId);
+
+	/**
+	 * 删除客户图片
+	 * @param imgName
+	 * @return
+	 */
+	boolean removeCustomerImg(String imgName);
+
+	/**
+	 * 获取创建人
+	 * @param createUser
+	 * @return
+	 */
+	String getCreateUserAccount(Long createUser);
 }

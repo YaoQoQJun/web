@@ -27,6 +27,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 /**
  * 用户表实体类
  *
@@ -55,11 +60,14 @@ public class Customer extends BaseEntity {
 	* 手机
 	*/
 		@ApiModelProperty(value = "手机")
+		@Size(min = 11,max = 11)
 		private String phone;
 	/**
 	* 年龄
 	*/
 		@ApiModelProperty(value = "年龄")
+		@Min(value = 16)
+		@Max(value = 100)
 		private Integer age;
 	/**
 	* 生日
@@ -76,6 +84,7 @@ public class Customer extends BaseEntity {
 	* 性别
 	*/
 		@ApiModelProperty(value = "性别")
+		@NotEmpty
 		private String sex;
 	/**
 	* 地址

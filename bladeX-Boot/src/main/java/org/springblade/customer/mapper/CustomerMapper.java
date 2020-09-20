@@ -16,7 +16,9 @@
  */
 package org.springblade.customer.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.springblade.customer.entity.Customer;
+import org.springblade.customer.entity.CustomerImg;
 import org.springblade.customer.vo.CustomerVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -39,4 +41,11 @@ public interface CustomerMapper extends BaseMapper<Customer> {
 	 */
 	List<CustomerVO> selectCustomerPage(IPage page, CustomerVO customer);
 
+	boolean saveCustomerImg(CustomerImg customerImg);
+
+	List<CustomerImg> getCustomerImgs(@Param("customerId") Long customerId);
+
+	boolean removeCustomerImg(@Param("imgName") String imgName);
+
+	String getCreateUserAccount(@Param("createUser")Long createUser);
 }

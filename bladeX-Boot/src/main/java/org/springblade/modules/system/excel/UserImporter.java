@@ -16,6 +16,7 @@
  */
 package org.springblade.modules.system.excel;
 
+import com.alibaba.excel.context.AnalysisContext;
 import lombok.RequiredArgsConstructor;
 import org.springblade.core.excel.support.ExcelImporter;
 import org.springblade.modules.system.service.IUserService;
@@ -34,7 +35,12 @@ public class UserImporter implements ExcelImporter<UserExcel> {
 	private final Boolean isCovered;
 
 	@Override
-	public void save(List<UserExcel> data) {
+	public void save(List<UserExcel> data, AnalysisContext analysisContext) {
 		service.importUser(data, isCovered);
+	}
+
+	@Override
+	public void afterAllAnalysed(AnalysisContext analysisContext) {
+
 	}
 }

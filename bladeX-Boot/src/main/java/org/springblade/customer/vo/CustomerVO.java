@@ -16,14 +16,11 @@
  */
 package org.springblade.customer.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springblade.customer.entity.Customer;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import io.swagger.annotations.ApiModel;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
+import org.springblade.customer.entity.CustomerImg;
 import java.util.List;
 
 /**
@@ -34,12 +31,14 @@ import java.util.List;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@ApiModel(value = "CustomerVO对象", description = "用户表")
+@ApiModel(value = "CustomerVO对象", description = "客户表")
 public class CustomerVO extends Customer {
 	private static final long serialVersionUID = 1L;
 
+	//创建人名称
 	private String createUserAccount;
 
-	private List<String> createTimeRange;
+	//客户对应照片集
+	private List<CustomerImg> customerImgs;
 
 }
