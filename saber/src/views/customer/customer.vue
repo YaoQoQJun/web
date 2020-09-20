@@ -196,7 +196,7 @@
               addDisplay: false,  //新增是否展示
               viewDisplay: true, //查看是否展示
               hide:false,          //列表隐藏
-              search: false,       //是否搜索
+              search: true,       //是否搜索
             },
             {
               label: "姓名",
