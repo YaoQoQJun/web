@@ -34,7 +34,7 @@ export const remove = (ids) => {
 
 export const add = (row) => {
   return request({
-    url: '/api/blade-customer/customer/submit',
+    url: '/api/blade-customer/customer/save',
     method: 'post',
     data: row
   })
@@ -42,9 +42,21 @@ export const add = (row) => {
 
 export const update = (row) => {
   return request({
-    url: '/api/blade-customer/customer/submit',
+    url: '/api/blade-customer/customer/save',
     method: 'post',
     data: row
   })
 }
 
+
+//导出设备列表
+export const exportCustomer = ids => {
+  return request({
+    url: "/api/blade-customer/customer/exportCustomer",
+    method: "post",
+    responseType: "arraybuffer",
+    params: {
+      ids:ids
+    }
+  });
+};

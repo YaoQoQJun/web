@@ -10,6 +10,8 @@ import store from './store';
 import {loadStyle} from './util/util'
 import * as urls from '@/config/env';
 import Element from 'element-ui';
+import plugins from "@/util/plugins";
+Vue.use(plugins);
 import {
   iconfontUrl,
   iconfontVersion
