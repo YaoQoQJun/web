@@ -8,6 +8,7 @@
       :permission="permissionList"
       :before-open="beforeOpen"
       :upload-before="uploadBefore"
+      :upload-delete="uploadDelete"
       v-model="form"
       ref="crud"
       @row-update="rowUpdate"
@@ -59,7 +60,10 @@ import {
   update,
   remove,
   exportCustomer,
+  removeCustomerImg,
+  saveCustomerImg,
 } from "@/api/customer/customer";
+import { setDialogBodyHeight } from "@/util/util";
 import { mapGetters } from "vuex";
 import {
   uploadBeforeCallback,
@@ -71,9 +75,39 @@ import {
 
 export default {
   data() {
+    let checkAge = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error("年龄不能为空"));
+      }
+      value = parseInt(value);
+      if (!Number.isInteger(value)) {
+        callback(new Error("请输入数字值"));
+      } else {
+        if (value < 16) {
+          callback(new Error("必须年满16岁"));
+        } else if (value > 100) {
+          callback(new Error("年龄不能大于100"));
+        } else {
+          callback();
+        }
+      }
+    };
+
+    let validPhone = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("请输入电话号码"));
+      } else if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(value)) {
+        callback(new Error("请输入正确的11位手机号码"));
+      } else {
+        callback();
+      }
+    };
+
     return {
+      id: "",
       files: [],
       form: {},
+      opeType: "",
       query: {},
       loading: true,
       page: {
@@ -85,6 +119,8 @@ export default {
       selectionList: [],
       sortParams: {},
       option: {
+        menuWidth: 200,
+        dialogHeight: 400,
         height: "auto",
         calcHeight: 30,
         dialogHeight: 600,
@@ -107,19 +143,15 @@ export default {
             hide: false, //列表隐藏
             search: true, //是否搜索
             slot: true,
-            value: "15213089751",
-            rules: [
-              {
-                required: true,
-                message: "请输入手机",
-                trigger: "blur",
-              },
-            ],
+            value: "",
+            width: 120,
+            rules: [{ required: true, trigger: "blur", validator: validPhone }],
           },
           {
             label: "性别",
             prop: "sex",
             value: "男",
+            width: 70,
             dicData: [
               {
                 label: "男",
@@ -149,25 +181,21 @@ export default {
           {
             label: "年龄",
             prop: "age",
-            value: "89",
+            value: "",
+            width: 70,
             editDisplay: true, //编辑是否展示
             addDisplay: true, //新增是否展示
             viewDisplay: true, //查看是否展示
             hide: false, //列表隐藏
             search: false, //是否搜索
             sortable: "custom",
-            rules: [
-              {
-                required: true,
-                message: "请输入年龄",
-                trigger: "blur",
-              },
-            ],
+            rules: [{ validator: checkAge, trigger: "blur", required: true }],
           },
           {
             label: "生日",
             prop: "birthday",
             type: "date",
+
             editDisplay: true, //编辑是否展示
             addDisplay: true, //新增是否展示
             viewDisplay: true, //查看是否展示
@@ -188,6 +216,7 @@ export default {
           {
             label: "创建时间",
             prop: "createTime",
+            width: 140,
             format: "yyyy-MM-dd hh:mm:ss",
             valueFormat: "yyyy-MM-dd hh:mm:ss",
             editDisplay: false, //编辑是否展示
@@ -205,6 +234,7 @@ export default {
             viewDisplay: true, //查看是否展示
             hide: false, //列表隐藏
             search: false, //是否搜索
+            width: 100,
           },
           {
             label: "导出时间",
@@ -342,6 +372,7 @@ export default {
             dataType: "array",
             listType: "picture-img",
             span: 24,
+            limit: 200,
             hide: true,
             listType: "picture-card",
             headers: { "Content-Type": "multipart/form-data" },
@@ -372,7 +403,35 @@ export default {
     },
   },
   methods: {
+    //删除图片
+    uploadDelete(column, file) {
+      if (this.opeType == "edit") {
+        this.wconfirm("删除后不可恢复，确认要删除图片吗？").then(() => {
+          let imgName = "upload" + file.url.split("upload")[1];
+          if (this.opeType == "edit") {
+            removeCustomerImg(imgName).then((res) => {
+              let customerImgsArr = this.form.customerImgs;
+              customerImgsArr.forEach((item, index) => {
+                if (item == file.url) {
+                  customerImgsArr.splice(index, 1);
+                }
+              });
+              this.$message({
+                type: "success",
+                message: "删除成功",
+              });
+              return true;
+            });
+          }
+        });
+      }
+      return false;
+    },
     customerExport() {
+      if (this.selectionList.length === 0) {
+        this.$message.warning("请选择至少一条数据");
+        return;
+      }
       let loading = this.showLoading("正在导出");
       exportCustomer(this.ids)
         .then((res) => {
@@ -394,12 +453,37 @@ export default {
       this.onLoad(this.page);
     },
 
-    //删除文件的回调
-    uploadAfter(column) {
-      uploadAfterCallback(column, this);
-    },
     uploadBefore(file, done, loading, column) {
-      uploadBeforeCallback(file, loading, column, ["jpeg", "png", "jpg"], this);
+      if (this.opeType == "add") {
+        uploadBeforeCallback(
+          file,
+          loading,
+          column,
+          ["jpeg", "png", "jpg"],
+          this
+        );
+      } else {
+        uploadBeforeCallback(
+          file,
+          loading,
+          column,
+          ["jpeg", "png", "jpg"],
+          this,
+          saveImagesCallback,
+          this
+        );
+        function saveImagesCallback(file, that) {
+          let formdata = new FormData();
+          formdata.append("file", file);
+          formdata.append("customerId", that.id);
+          saveCustomerImg(formdata).then((res) => {
+            that.$message({
+              type: "success",
+              message: "上传成功",
+            });
+          });
+        }
+      }
     },
     getFormdata(row) {
       let formdata = getFormdataByFile(row, this, "customerImgs");
@@ -422,6 +506,7 @@ export default {
       );
     },
     rowUpdate(row, index, done, loading) {
+      row.customerImgs = [];
       update(row).then(
         () => {
           this.onLoad(this.page);
@@ -478,8 +563,10 @@ export default {
         });
     },
     beforeOpen(done, type) {
+      this.opeType = type;
       if (["edit", "view"].includes(type)) {
         getDetail(this.form.id).then((res) => {
+          this.id = this.form.id;
           this.form = res.data.data;
           let customerImgsArr = res.data.data.customerImgs;
           let arr = [];
@@ -490,6 +577,7 @@ export default {
         });
       }
       done();
+      setDialogBodyHeight(this);
     },
     searchReset() {
       this.query = {};

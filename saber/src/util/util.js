@@ -336,7 +336,8 @@ export const uploadBeforeCallback = (
   loading,
   column,
   suffixArr,
-  that
+  that,
+  callback = function() {}
 ) => {
   let prop = column.prop;
   let suffix = getLastStrBySeparator(file.name, ".");
@@ -353,6 +354,7 @@ export const uploadBeforeCallback = (
       that.form[prop] = [{ label: file.name }];
     }
     that.files.push(file);
+    callback(file, that);
   } else {
     let fileUrlArr = that.form[prop];
     //如果当前有文件，怎不删除列表，如果当前没有文件，则删除列表
@@ -376,10 +378,10 @@ export const uploadAfterCallback = (column, that) => {
  */
 export const getFormdataByFile = (row, that, prop, fileName = "files") => {
   let formdata = new FormData();
-  that.files.forEach((item)=>{
+  that.files.forEach(item => {
     formdata.append(fileName, item);
-  })
- 
+  });
+
   for (let key in row) {
     let value = row[key];
     if (key == prop) value = "";
@@ -397,9 +399,43 @@ export const camecaseToLine = name => {
 
 export const exportExcel = res => {
   const url = window.URL.createObjectURL(new Blob([res.data]));
+  console.log("url: ", url);
   const link = document.createElement("a");
   link.href = url;
-  link.setAttribute("download", "历史数据.doxc");
+  link.setAttribute("download", "用户信息.doc");
   document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
+  window.URL.revokeObjectURL(href);
+};
+export const setDialogBodyHeight = that => {
+  setTimeout(() => {
+    let dialogEl =
+      that.$refs.crud.$refs.dialogForm.$refs.elDialogForm.$el.childNodes[0];
+    let dialogHeight = dialogEl.offsetHeight;
+    dialogEl.childNodes[1].style.height = dialogHeight - 82 + "px";
+  }, 200);
+};
+//获取日期
+export const getDate = (date = "") => {
+  if (date == "") {
+    date = new Date();
+  }
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let newMonth = month < 10 ? "0" + month : month;
+  let day = date.getDate();
+  let newDay = day < 10 ? "0" + day : day;
+
+  return {
+    year,
+    newMonth,
+    newDay
+  };
+};
+
+export const getNDayAgo = n => {
+  var now = new Date();
+  now.setDate(now.getDate() - n);
+  return getDate(now);
 };
