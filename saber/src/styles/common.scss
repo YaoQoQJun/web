@@ -740,3 +740,15 @@ div[_echarts_instance_] {
   display: inline-block;
   width: 250px;
 }
+
+.el-table__body-wrapper {
+  height: auto !important;
+}
+
+.el-table {
+  height: auto !important;
+}
+
+.el-pagination {
+  padding: 10px 5px;
+}

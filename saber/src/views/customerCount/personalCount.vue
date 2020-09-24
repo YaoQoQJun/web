@@ -68,6 +68,9 @@ export default {
     },
     searchChange(params, done) {
       this.query = params;
+      if (this.validatenull(params)) {
+        this.query = { dateTimeRange: ["", ""] };
+      }
       this.onLoad(this.page, params);
       done();
     },

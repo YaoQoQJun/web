@@ -151,7 +151,7 @@ export default {
             label: "性别",
             prop: "sex",
             value: "男",
-            width: 70,
+            width: 60,
             dicData: [
               {
                 label: "男",
@@ -163,7 +163,6 @@ export default {
               },
             ],
             type: "radio",
-            sortable: "custom",
             editDisplay: true, //编辑是否展示
             addDisplay: true, //新增是否展示
             viewDisplay: true, //查看是否展示
@@ -234,7 +233,7 @@ export default {
             viewDisplay: true, //查看是否展示
             hide: false, //列表隐藏
             search: false, //是否搜索
-            width: 100,
+            width: 70,
           },
           {
             label: "导出时间",
@@ -244,6 +243,7 @@ export default {
             viewDisplay: true, //查看是否展示
             hide: false, //列表隐藏
             sortable: "custom",
+            width: 140,
             search: false, //是否搜索
           },
           {
