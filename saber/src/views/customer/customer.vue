@@ -24,13 +24,20 @@
       @on-load="onLoad"
     >
       <template slot="phone" slot-scope="scope">
-        <span style="color: #F56C6C;font-size:14px;font-weight:bold">{{scope.row.phone}}</span>
+        <span style="color: #f56c6c; font-size: 14px; font-weight: bold">{{
+          scope.row.phone
+        }}</span>
       </template>
 
-      <template slot="status" slot-scope="{row}">
-        <el-tag :type="statusType[row.status-1]">{{row.$status}}</el-tag>
+      <template slot="status" slot-scope="{ row }">
+        <el-tag :type="statusType[row.status - 1]">{{ row.$status }}</el-tag>
       </template>
-
+      <template slot="remarkForm" slot-scope="{ row }">
+        <span>{{ row.remark }}</span>
+      </template>
+      <template slot="exportTimeDetailForm" slot-scope="{ row }">
+        <span>{{ row.exportTimeDetail }}</span>
+      </template>
       <template slot="menuLeft">
         <el-button
           type="danger"
@@ -39,14 +46,16 @@
           plain
           v-if="permission.customer_delete"
           @click="handleDelete"
-        >删 除</el-button>
+          >删 除</el-button
+        >
         <el-button
           type="primary"
           size="small"
           icon="el-icon-download"
           v-if="permission.customer_export"
           @click="customerExport()"
-        >导 出</el-button>
+          >导 出</el-button
+        >
       </template>
     </avue-crud>
   </basic-container>
@@ -123,8 +132,7 @@ export default {
         dialogHeight: 400,
         height: "auto",
         calcHeight: 30,
-        dialogHeight: 600,
-        dailogHeight: 800,
+        labelWidth: 100,
         tip: false,
         searchShow: true,
         searchMenuSpan: 6,
@@ -256,6 +264,7 @@ export default {
             search: false, //是否搜索
             sortable: "custom",
           },
+
           {
             label: "状态",
             prop: "status",
@@ -264,12 +273,10 @@ export default {
               {
                 label: "未导出",
                 value: 1,
-                color: "red",
               },
               {
                 label: "已导出",
                 value: 2,
-                color: "red",
               },
             ],
             slot: true,
@@ -349,6 +356,7 @@ export default {
           {
             label: "备注",
             prop: "remark",
+            formslot: true,
             type: "textarea",
             span: 24,
             minRows: 4,
@@ -364,6 +372,17 @@ export default {
                 trigger: "blur",
               },
             ],
+          },
+          {
+            label: "导出时间详情",
+            prop: "exportTimeDetail",
+            hide: true,
+            type: "textarea",
+            formslot: true,
+            minRows: 4,
+            span: 24,
+            editDisplay: false, //编辑是否展示
+            addDisplay: false, //新增是否展示
           },
           {
             label: "用户图片",
