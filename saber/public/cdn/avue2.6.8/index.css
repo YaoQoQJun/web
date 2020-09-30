@@ -525,7 +525,7 @@
 
 .avue-crud__dialog--fullscreen .el-dialog {
   left: 0 !important;
-  top: 0 !important
+  top: 0;
 }
 
 .avue-crud__dialog__header {

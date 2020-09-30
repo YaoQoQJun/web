@@ -129,7 +129,6 @@ export default {
       sortParams: {},
       option: {
         menuWidth: 200,
-        dialogHeight: 400,
         height: "auto",
         calcHeight: 30,
         labelWidth: 100,
