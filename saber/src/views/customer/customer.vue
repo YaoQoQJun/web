@@ -356,7 +356,7 @@ export default {
           {
             label: "备注",
             prop: "remark",
-            formslot: true,
+            // formslot: true,
             type: "textarea",
             span: 24,
             minRows: 4,
@@ -583,6 +583,7 @@ export default {
     },
     beforeOpen(done, type) {
       this.opeType = type;
+      this.files = [];
       if (["edit", "view"].includes(type)) {
         getDetail(this.form.id).then((res) => {
           this.id = this.form.id;
