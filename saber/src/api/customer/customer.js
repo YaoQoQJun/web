@@ -68,6 +68,14 @@ export const update = row => {
   });
 };
 
+export const chenkPhone = row => {
+  return request({
+    url: "/api/blade-customer/customer/chenkPhone",
+    method: "post",
+    data: row
+  });
+};
+
 //导出设备列表
 export const exportCustomer = ids => {
   return request({

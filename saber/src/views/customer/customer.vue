@@ -24,9 +24,28 @@
       @on-load="onLoad"
     >
       <template slot="phone" slot-scope="scope">
-        <span style="color: #f56c6c; font-size: 14px; font-weight: bold">{{
-          scope.row.phone
-        }}</span>
+        <el-popover
+          placement="right"
+          width="500"
+          trigger="hover"
+          v-if="scope.row.customerImg.imgLink"
+        >
+          <img
+            object-fit="contain"
+            :src="scope.row.customerImg.imgLink"
+            style="width: 100%; height: 100%"
+          />
+          <span
+            slot="reference"
+            style="color: #f56c6c; font-size: 14px; font-weight: bold"
+            >{{ scope.row.phone }}</span
+          >
+        </el-popover>
+        <span
+          v-else
+          style="color: #f56c6c; font-size: 14px; font-weight: bold"
+          >{{ scope.row.phone }}</span
+        >
       </template>
 
       <template slot="status" slot-scope="{ row }">
@@ -71,6 +90,7 @@ import {
   exportCustomer,
   removeCustomerImg,
   saveCustomerImg,
+  chenkPhone,
 } from "@/api/customer/customer";
 import { setDialogBodyHeight } from "@/util/util";
 import { mapGetters } from "vuex";
@@ -108,7 +128,16 @@ export default {
       } else if (!/^1[1|2|3|4|5|6|7|8|9][0-9]\d{8}$/.test(value)) {
         callback(new Error("请输入正确的11位手机号码"));
       } else {
-        callback();
+        chenkPhone({
+          id: this.opeType == "edit" ? this.id : "",
+          phone: value,
+        })
+          .then(() => {
+            callback();
+          })
+          .catch(() => {
+            callback(new Error("手机号码已存在"));
+          });
       }
     };
 
