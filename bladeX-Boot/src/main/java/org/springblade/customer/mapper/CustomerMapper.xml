@@ -22,6 +22,7 @@
         <result column="address" property="address"/>
         <result column="income" property="income"/>
         <result column="export_time" property="exportTime"/>
+        <result column="export_time_detail" property="exportTimeDetail"/>
         <result column="export_num" property="exportNum"/>
         <result column="remark" property="remark"/>
     </resultMap>
@@ -66,5 +67,35 @@
     <select id="getCreateUserAccount" parameterType="java.lang.Long" resultType="java.lang.String">
         select account from blade_user where id=#{createUser}
     </select>
+
+    <select id="allCount" resultType="java.util.HashMap">
+        select
+        (select count(*) from cqct_customer b where b.sex='男' and b.create_time BETWEEN #{startDate} and #{endDate} and is_deleted=0)  as boy,
+        (select count(*) from cqct_customer b where b.sex='女' and b.create_time BETWEEN #{startDate} and #{endDate} and is_deleted=0)  as girl,
+        (select count(*) from cqct_customer b where b.create_time BETWEEN #{startDate} and #{endDate} and is_deleted=0)  as `all`
+    </select>
+
+    <select id="personalCount"  resultType="java.util.HashMap">
+        select
+        CONCAT(a.account,'(',a.real_name,')') AS `name`,
+        (
+        select count(*) from cqct_customer b where b.create_user=a.id and b.sex='男'
+        and b.create_time BETWEEN #{startDate} and #{endDate}
+        and is_deleted=0
+        ) as boy,
+
+        (
+        select count(*) from cqct_customer b where b.create_user=a.id and b.sex='女'
+        and b.create_time BETWEEN #{startDate} and #{endDate}
+        and is_deleted=0
+        ) as girl,
+        (
+        select count(*) from cqct_customer b where b.create_user=a.id
+        and b.create_time BETWEEN #{startDate} and #{endDate}
+        and is_deleted=0
+        ) as `all`
+        from blade_user a where a.is_deleted=0
+    </select>
+
 
 </mapper>

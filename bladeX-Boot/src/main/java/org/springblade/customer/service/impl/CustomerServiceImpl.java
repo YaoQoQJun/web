@@ -16,7 +16,7 @@
  */
 package org.springblade.customer.service.impl;
 
-import org.springblade.core.oss.model.BladeFile;
+import com.alibaba.fastjson.JSONObject;
 import org.springblade.customer.entity.Customer;
 import org.springblade.customer.entity.CustomerImg;
 import org.springblade.customer.vo.CustomerVO;
@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,6 +66,17 @@ public class CustomerServiceImpl extends BaseServiceImpl<CustomerMapper, Custome
 	@Override
 	public String getCreateUserAccount(Long createUser) {
 		return customerMapper.getCreateUserAccount(createUser);
+	}
+
+	@Override
+	public JSONObject allCount(Date startDate, Date endDate) {
+		HashMap<String,String> map=customerMapper.allCount(startDate,endDate);
+		return JSONObject.parseObject(JSONObject.toJSONString(map));
+	}
+
+	@Override
+	public List<HashMap<String, Object>> personalCount(Date startDate, Date endDate) {
+		return customerMapper.personalCount(startDate,endDate);
 	}
 
 }

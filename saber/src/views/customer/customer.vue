@@ -92,10 +92,10 @@ export default {
       if (!Number.isInteger(value)) {
         callback(new Error("请输入数字值"));
       } else {
-        if (value < 16) {
-          callback(new Error("必须年满16岁"));
-        } else if (value > 100) {
-          callback(new Error("年龄不能大于100"));
+        if (value < 1) {
+          callback(new Error("年龄必须大于1"));
+        } else if (value > 500) {
+          callback(new Error("年龄必须小于500"));
         } else {
           callback();
         }
@@ -105,7 +105,7 @@ export default {
     let validPhone = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入电话号码"));
-      } else if (!/^1[3|4|5|7|8][0-9]\d{8}$/.test(value)) {
+      } else if (!/^1[1|2|3|4|5|6|7|8|9][0-9]\d{8}$/.test(value)) {
         callback(new Error("请输入正确的11位手机号码"));
       } else {
         callback();
@@ -157,16 +157,16 @@ export default {
           {
             label: "性别",
             prop: "sex",
-            value: "男",
+            value: "女",
             width: 60,
             dicData: [
               {
-                label: "男",
-                value: "男",
-              },
-              {
                 label: "女",
                 value: "女",
+              },
+              {
+                label: "男",
+                value: "男",
               },
             ],
             type: "radio",

@@ -16,6 +16,7 @@
  */
 package org.springblade.customer.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springblade.core.oss.model.BladeFile;
 import org.springblade.customer.entity.Customer;
 import org.springblade.customer.entity.CustomerImg;
@@ -23,6 +24,8 @@ import org.springblade.customer.vo.CustomerVO;
 import org.springblade.core.mp.base.BaseService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -70,4 +73,20 @@ public interface ICustomerService extends BaseService<Customer> {
 	 * @return
 	 */
 	String getCreateUserAccount(Long createUser);
+
+	/**
+	 * 根据时间区间概况统计
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	JSONObject allCount(Date startDate, Date endDate);
+
+	/**
+	 * 根据时间区间个人统计
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	List<HashMap<String, Object>> personalCount(Date startDate, Date endDate);
 }

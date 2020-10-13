@@ -22,6 +22,9 @@ import org.springblade.customer.entity.CustomerImg;
 import org.springblade.customer.vo.CustomerVO;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -48,4 +51,8 @@ public interface CustomerMapper extends BaseMapper<Customer> {
 	boolean removeCustomerImg(@Param("imgName") String imgName);
 
 	String getCreateUserAccount(@Param("createUser")Long createUser);
+
+	HashMap<String, String> allCount(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
+
+	List<HashMap<String, Object>> personalCount(Date startDate, Date endDate);
 }

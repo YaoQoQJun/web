@@ -66,8 +66,8 @@ public class Customer extends BaseEntity {
 	* 年龄
 	*/
 		@ApiModelProperty(value = "年龄")
-		@Min(value = 16)
-		@Max(value = 100)
+		@Min(value = 1)
+		@Max(value = 500)
 		private Integer age;
 	/**
 	* 生日
@@ -95,18 +95,18 @@ public class Customer extends BaseEntity {
 	* 收入
 	*/
 		@ApiModelProperty(value = "收入")
-		private Double income;
+		private String income;
 	/**
 	* 导出时间
 	*/
 		@ApiModelProperty(value = "导出时间")
-		@DateTimeFormat(
-			pattern = "yyyy-MM-dd"
-		)
-		@JsonFormat(
-			pattern = "yyyy-MM-dd"
-		)
 		private Date exportTime;
+
+		/**
+		 * 导出时间详情
+		 */
+		private String exportTimeDetail;
+
 	/**
 	* 导出次数
 	*/
