@@ -26,7 +26,7 @@
       <template slot="phone" slot-scope="scope">
         <el-popover
           placement="right"
-          width="500"
+          width="300"
           trigger="hover"
           v-if="scope.row.customerImg.imgLink"
         >
@@ -37,13 +37,15 @@
           />
           <span
             slot="reference"
-            style="color: #f56c6c; font-size: 14px; font-weight: bold"
+            :class="scope.row.status == '1' ? 'fail' : 'success'"
+            style="font-size: 14px; font-weight: bold"
             >{{ scope.row.phone }}</span
           >
         </el-popover>
         <span
           v-else
-          style="color: #f56c6c; font-size: 14px; font-weight: bold"
+          :class="scope.row.status == '1' ? 'fail' : 'success'"
+          style="font-size: 14px; font-weight: bold"
           >{{ scope.row.phone }}</span
         >
       </template>
@@ -153,7 +155,7 @@ export default {
         currentPage: 1,
         total: 0,
       },
-      statusType: ["danger", ""],
+      statusType: ["danger", "success"],
       selectionList: [],
       sortParams: {},
       option: {
